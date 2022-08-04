@@ -7,7 +7,7 @@ const { Product, Category, Tag, ProductTag } = require("../../models");
 router.get("/", async (req, res) => {
   // find all products
   try {
-    const product = await Product.findAll({
+    const productDetails = await Product.findAll({
       //TODO: include its associated Category and Tag data
       include: [{ model: Category }, { model: Tag }],
     });
@@ -31,27 +31,9 @@ router.get("/:id", async (req, res) => {
   }
 });
 
-// TODO: create new product
-router.post("/", async (req, res) => {
-  try {
-    const { product_name, price, stock, tagIds } = req.body;
-    const productDetails = new Product({ product_name, price, stock, tagIds });
-    const ret = await productDetails.save();
-    res.json(ret);
-  } catch (err) {
-    console.log(err);
-    res.status(400).json(err);
-  }
+// TODO: Create new product
 
-  router.post("/", async (req, res) => {
-    try {
-      const locationData = await Location.create(req.body);
-      res.status(200).json(locationData);
-    } catch (err) {
-      res.status(400).json(err);
-    }
-  });
-
+router.post("/", (req, res) => {
   /* req.body should look like this...
       {
         product_name: "Basketball",
@@ -62,15 +44,15 @@ router.post("/", async (req, res) => {
     */
   Product.create(req.body)
     .then((product) => {
-      // if there's product tags, we need to create pairings to bulk create in the ProductTag model
+      // if there are product tags, create pairings to bulk create in the ProductTag model
       if (req.body.tagIds.length) {
-        const productTagIdArr = req.body.tagIds.map((tag_id) => {
+        const productTagIdArray = req.body.tagIds.map((tag_id) => {
           return {
             product_id: product.id,
             tag_id,
           };
         });
-        return ProductTag.bulkCreate(productTagIdArr);
+        return ProductTag.bulkCreate(productTagIdArray);
       }
       // if no product tags, just respond
       res.status(200).json(product);
