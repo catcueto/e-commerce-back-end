@@ -4,7 +4,7 @@
 
 Utilizing Node.js, Express.js, MYSQL database, and Sequelize to build the back-end portion for an e-commerce site. A walkthrough video can be found in the link below:
 
-[ADD VIDEO LINK]
+https://drive.google.com/file/d/1OUV6qGwiufx4_kd1o_K3pgHGAv45ojAH/view
 
 ## Table of Contents
 
